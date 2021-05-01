@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "Convert", type: :request do
+  describe "GET /convert/schema" do
+    it 'does not return error' do
+      get '/convert/schema'
+
+      expect(response.status).to eq 200
+    end
+  end
+ 
   describe "POST /convert" do
     context 'validなJSONを送信した時' do
       let(:request_body) do

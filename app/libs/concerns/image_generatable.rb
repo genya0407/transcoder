@@ -1,14 +1,39 @@
-module JsonSerializable
+module ImageGeneratable
   extend ActiveSupport::Concern  
   include ActiveModel::Serializers::JSON
   include ActiveModel::Validations
 
   included do
-    attr_accessor *columns
-    columns.each do |column|
-      validates column, presence: true
-    end
     validate :validate_columns
+    ImageGeneratable.schema << self
+  end
+
+  module ClassMethods
+    def columns
+      schema.keys
+    end
+
+    def column(name, type)
+      schema[name] = type
+      attr_accessor name
+      validates name, presence: true
+    end
+
+    def schema
+      @schema ||= {}
+    end
+
+    def present_schema
+      schema.transform_values(&:name)
+    end
+  end
+
+  def self.schema
+    @schema ||= []
+  end
+
+  def self.present_schema
+    schema.map(&:name)
   end
 
   def type

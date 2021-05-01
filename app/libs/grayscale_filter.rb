@@ -1,7 +1,7 @@
 class GrayscaleFilter
-  def self.columns; %i[input_image]; end
+  include ImageGeneratable
 
-  include JsonSerializable
+  column :input_image, ImageGeneratable
 
   def image
     img = input_image.image

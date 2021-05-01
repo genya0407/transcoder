@@ -1,11 +1,12 @@
 class BinarizationFilter
-  def self.columns; %i[input_image threshold]; end
+  include ImageGeneratable
 
-  include JsonSerializable
+  column :input_image, ImageGeneratable
+  column :threshold, Integer
 
   def image
     img = input_image.image
-    img.threshold(threshold)
+    img.threshold("#{threshold}%")
     img
   end
 end

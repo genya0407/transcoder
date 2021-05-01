@@ -2,6 +2,15 @@ class ConvertController < ApplicationController
   def index
   end
   
+  def schema
+    render json: {
+      composit_schemas: {
+        'ImageGeneratable' => ImageGeneratable.present_schema,
+        **ImageGeneratable.schema.map { |klass| [klass.name, klass.present_schema] }.to_h
+      }
+    }
+  end
+
   def create
     image_filter = Builder.build(JSON.parse(request.body.read, symbolize_names: true))
     unless image_filter.valid?
