@@ -8,6 +8,7 @@ gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 5.0'
 gem 'sass-rails', '>= 6'
 gem 'webpacker', '~> 5.0'
+gem 'mini_magick', '~> 4.11'
 
 gem 'jbuilder', '~> 2.7'
 gem 'redis', '~> 4.0'
@@ -18,6 +19,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 5.0.0'
+  gem 'stackprof'
 end
 
 group :development do
