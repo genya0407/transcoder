@@ -1,0 +1,11 @@
+div style='width: 800px; margin: 1em auto; background-color: yellow;'
+  div data-controller='convert'
+    input data-convert-target='inputImageFile' data-action='convert#previewUploaded convert#convert' type='file'
+    img data-convert-target='inputImage' style='width: 500px; display: block;'
+    img data-convert-target='outputImage' style='width: 500px; display: block;'
+    button data-action='convert#convert'
+      = '更新'
+
+/ form action='/convert' method='POST'
+/   textarea name=:json
+/   input type=:submit value='送信'

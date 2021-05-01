@@ -2,7 +2,7 @@ module Builder
   # 以下のようなhashを想定
   <<~HASH
   {
-    "type": "binalization_filter",
+    "type": "binarization_filter",
     "input": {
       "type": "binary_image",
       "image": "base64 encoded image binary"

@@ -168,6 +168,9 @@ GEM
       sprockets-rails
       tilt
     semantic_range (3.0.0)
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
     spring (2.1.1)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -180,6 +183,7 @@ GEM
     stackprof (0.2.16)
     stimulus-rails (0.2.3)
       rails (>= 6.0.0)
+    temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
     turbo-rails (0.5.9)
@@ -217,6 +221,7 @@ DEPENDENCIES
   redis (~> 4.0)
   rspec-rails (~> 5.0.0)
   sass-rails (>= 6)
+  slim
   spring
   sqlite3 (~> 1.4)
   stackprof
