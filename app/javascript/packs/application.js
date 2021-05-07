@@ -12,3 +12,9 @@ Rails.start()
 ActiveStorage.start()
 
 import "controllers"
+
+require("jquery")
+
+import 'bootstrap'
+import '@fortawesome/fontawesome-free/js/all'
+import '../src/application.scss'

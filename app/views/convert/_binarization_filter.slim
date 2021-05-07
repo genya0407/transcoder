@@ -1,0 +1,17 @@
+.col-3 data-controller='binarization-filter' data-binarization-filter-gid-value=generator_id data-action='gid-selector-connected->binarization-filter#submit'
+  .card
+    turbo-frame id="result-#{generator_id}"
+      = render partial: 'placeholder_img'
+    .card-body
+      h5
+        = "２値化 #{generator_id}"
+        .btn.btn-default
+          i.fas.fa-trash data-action='click->binarization-filter#remove'
+      input type='hidden' name="generators[#{generator_id}][type]" value='binarization_filter'
+      .form-group.form-inline
+        label for="input_image-#{generator_id}" 入力画像
+        = render partial: 'gid_selector', locals: { dom_id: "input_image-#{generator_id}", name: "generators[#{generator_id}][input_image]", reject_generator_id: generator_id }
+      .form-group.form-inline
+        label for="threshold-#{generator_id}" 閾値
+        input.form-control id="threshold-#{generator_id}" type='number' name="generators[#{generator_id}][threshold]" min=0 max=100 required=true step=1 value=50 data-action='binarization-filter#submit'
+        = '%'

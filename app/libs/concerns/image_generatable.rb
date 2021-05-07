@@ -6,6 +6,7 @@ module ImageGeneratable
   included do
     validate :validate_columns
     ImageGeneratable.schema << self
+    column :gid, String
   end
 
   module ClassMethods
@@ -34,6 +35,26 @@ module ImageGeneratable
 
   def self.present_schema
     schema.map(&:name)
+  end
+
+  def image_b64
+    Tempfile.open(['result', '.png']) do |f|
+      image.write(f)
+      f.rewind
+      Base64.encode64(f.read)
+    end
+  end
+
+  def all_child_generators
+    child_generators = generator_columns
+    child_generators.dup.each do |child_generator|
+      child_generators.concat(child_generator.all_child_generators)
+    end
+    child_generators
+  end
+
+  def generator_columns
+    self.class.schema.select { |_, klass| klass <= ImageGeneratable }.map { |name, _| self.public_send(name) }
   end
 
   def type
@@ -65,4 +86,9 @@ module ImageGeneratable
       end
     end
   end
+end
+
+# 開発時、ImageGeneratableがアンロードされたとしても、ImageGeneratable.schemaが正しく動くようにする
+Dir.glob('../*.rb').each do |fname|
+  require fname
 end

@@ -1,0 +1,15 @@
+.col-3 data-controller='binary-image' data-binary-image-gid-value=generator_id
+  .card
+    turbo-frame id="result-#{generator_id}"
+      = render partial: 'placeholder_img'
+    .card-body
+      h5 class='card-title'
+        = "画像ファイル #{generator_id}"
+        .btn.btn-default
+          i.fas.fa-trash data-action='click->binary-image#remove'
+      input type='hidden' name="generators[#{generator_id}][type]" data-binary-image-target='type' value='binary_image'
+      input type='hidden' name="generators[#{generator_id}][b64_image]" data-binary-image-target='b64Image'
+      .custom-file
+        input.custom-file-input id="#{generator_id}-validatedCustomFile" data-binary-image-target='inputImageFile' data-action='binary-image#submitForm' type='file' required=true
+        label.custom-file-label for="#{generator_id}-validatedCustomFile"
+          = 'Choose file'

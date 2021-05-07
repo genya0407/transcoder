@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :convert do
     collection do
-      get :schema
+      post :create_generator
     end
   end
 end
