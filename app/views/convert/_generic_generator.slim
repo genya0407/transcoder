@@ -1,0 +1,30 @@
+.col-3 data-controller='generic-generator' data-generic-generator-gid-value=generator_id data-action='gid-selector-connected->generic-generator#submit'
+  .card
+    turbo-frame id="result-#{generator_id}"
+      = render partial: 'placeholder_img'
+    .card-body
+      h5
+        = "#{t(generator_type.name.underscore)} #{generator_id}"
+        .btn.btn-default
+          i.fas.fa-trash data-action='click->generic-generator#remove'
+      input type='hidden' name="generators[#{generator_id}][type]" value=generator_type.name.underscore
+      input type='hidden' name='generators[#{generator_id}][gid]' value=generator_id
+      - generator_type.schema.each do |column_name, column_type|
+        - next if column_name == :gid
+        - input_id = "#{column_name}-#{generator_id}"
+        .form-group.form-inline
+          label for=input_id
+            = t(column_name)
+          - case
+          - when column_type == ImageGeneratable
+            = render partial: 'gid_selector', locals: { dom_id: input_id, name: "generators[#{generator_id}][#{column_name}]", reject_generator_id: generator_id }
+          - when column_type.is_a?(IntegerColumn)
+            input.form-control id=input_id type='number' name="generators[#{generator_id}][#{column_name}]" min=column_type.min max=column_type.max required=true step=1 value=column_type.default data-action='generic-generator#submit'
+          - when column_type.is_a?(EnumColumn)
+            select name="generators[#{generator_id}][#{column_name}]"
+              - column_type.values.each do |value|
+                option value=value
+                  = t(value)
+          - else
+            - raise NotIimplementedError, column_type.inspect
+      turbo-frame id="error-#{generator_id}"

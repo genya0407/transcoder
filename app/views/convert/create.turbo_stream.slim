@@ -1,4 +1,15 @@
-- @valid_generators.map { |generator| ([generator] + generator.all_child_generators) }.flatten.each do |g|
-  turbo-stream action='update' target="result-#{g.gid}"
-    template
-      img src="data:image/png;base64,#{g.image_b64}" class='card-img-top'
+- @generators.each do |g|
+  - if g.valid?
+    turbo-stream action='update' target="result-#{g.gid}"
+      template
+          img src="data:image/png;base64,#{g.image_b64(tmpdir: @tmpdir)}" class='card-img-top'
+    turbo-stream action='update' target="error-#{g.gid}"
+      template
+  - else
+    turbo-stream action='update' target="result-#{g.gid}"
+      template
+        = render partial: 'placeholder_img'
+    turbo-stream action='update' target="error-#{g.gid}"
+      template
+        pre
+          = JSON.pretty_generate(g.errors.messages)

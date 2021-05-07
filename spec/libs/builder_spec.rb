@@ -9,7 +9,10 @@ describe Builder do
       )
 
       expect(image.class).to eq BinaryImage
-      expect(image.image.signature).to eq MiniMagick::Image.open(file_fixture('builder/input.png')).signature
+
+      Dir.mktmpdir do |tmpdir|
+        expect(MiniMagick::Image.open(image.image_file_path(tmpdir: tmpdir)).signature).to eq MiniMagick::Image.open(file_fixture('builder/input.png')).signature
+      end
     end
   end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Convert", type: :request do
+RSpec.xdescribe "Convert", type: :request do
   describe "GET /convert/schema" do
     it 'does not return error' do
       get '/convert/schema'

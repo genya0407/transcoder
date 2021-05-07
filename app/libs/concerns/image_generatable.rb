@@ -6,7 +6,7 @@ module ImageGeneratable
   included do
     validate :validate_columns
     ImageGeneratable.schema << self
-    column :gid, String
+    column :gid, StringColumn
   end
 
   module ClassMethods
@@ -18,6 +18,10 @@ module ImageGeneratable
       schema[name] = type
       attr_accessor name
       validates name, presence: true
+      validates_each name do |record, attr, value|
+        error_message = type.validate(value)
+        record.errors.add attr, error_message if error_message
+      end
     end
 
     def schema
@@ -37,12 +41,19 @@ module ImageGeneratable
     schema.map(&:name)
   end
 
-  def image_b64
-    Tempfile.open(['result', '.png']) do |f|
-      image.write(f)
-      f.rewind
-      Base64.encode64(f.read)
-    end
+  def self.validate(value)
+    return if value.is_a?(self)
+    "should be #{self}, was actually #{value.class}"
+  end
+
+  def image_b64(tmpdir:)
+    Base64.encode64(File.read(image_file_path(tmpdir: tmpdir)))
+  end
+
+  def create_tempfile(basename: 'result', tmpdir:)
+    out_file = Tempfile.create(basename, tmpdir)
+    out_file.binmode
+    out_file
   end
 
   def all_child_generators
@@ -54,7 +65,7 @@ module ImageGeneratable
   end
 
   def generator_columns
-    self.class.schema.select { |_, klass| klass <= ImageGeneratable }.map { |name, _| self.public_send(name) }
+    self.class.schema.select { |_, klass| klass.is_a?(Module) && klass <= ImageGeneratable }.map { |name, _| self.public_send(name) }
   end
 
   def type
@@ -86,9 +97,4 @@ module ImageGeneratable
       end
     end
   end
-end
-
-# 開発時、ImageGeneratableがアンロードされたとしても、ImageGeneratable.schemaが正しく動くようにする
-Dir.glob('../*.rb').each do |fname|
-  require fname
 end

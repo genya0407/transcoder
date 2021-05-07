@@ -7,7 +7,7 @@ div data-controller='converter' data-action="submit-converter-form->converter#su
         - ImageGeneratable.schema.map(&:name).map(&:underscore).each do |name|
           = link_to create_generator_convert_index_path(generator_type: name), method: :POST, class: 'btn btn-outline-dark m-1' do
             i.fas.fa-plus style='margin-right: 0.5em'
-            = name
+            = t(name)
 
     turbo-frame.row.justify-content-start.flex-wrap id='generators' style='width: 100%'
       = render partial: 'binary_image', locals: { generator_id: generate_generator_id }

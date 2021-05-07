@@ -1,14 +1,4 @@
 module Builder
-  # 以下のようなhashを想定
-  <<~HASH
-  {
-    "type": "binarization_filter",
-    "input": {
-      "type": "binary_image",
-      "image": "base64 encoded image binary"
-    }
-  }
-  HASH
   module_function def build(hash)
     image_instance = hash.fetch(:type).camelize.constantize.new
     attributes = hash.except(:type).map do |key, value|

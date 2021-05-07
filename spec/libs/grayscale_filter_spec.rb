@@ -12,7 +12,9 @@ describe GrayscaleFilter do
     let(:output_image) { read_mimemagick_image('grayscale_filter/output.png') }
     
     it 'input_imageをthresholdで2値化する' do
-      expect(grayscale_filter.image.signature).to eq output_image.signature
+      Dir.mktmpdir do |tmpdir|
+        expect(MiniMagick::Image.open(grayscale_filter.image_file_path(tmpdir: tmpdir)).signature).to eq output_image.signature
+      end
     end
   end
 end
